@@ -112,6 +112,11 @@ class Swarm:
                 )
                 continue
             args = json.loads(tool_call.function.arguments)
+            if isinstance(args, str):
+                try:
+                    args = json.loads(args)  # 再解析一层
+                except json.JSONDecodeError:
+                    pass  # 如果解析失败，说明它本来就是字符串
             debug_print(
                 debug, f"Processing tool call: {name} with arguments {args}")
 
